@@ -1,55 +1,56 @@
-import { useCallback } from 'react'
-import Particles from 'react-tsparticles'
-import { loadFull } from 'tsparticles'
+import React, { useCallback } from "react";
+import Particles from "react-tsparticles";
+import { loadFull } from "tsparticles-engine";
 
-export default function ParticlesBG({ theme = 'red' }) {
+export default function ParticlesBG() {
   const particlesInit = useCallback(async (engine) => {
-    await loadFull(engine)
-  }, [])
-
-  const redPalette = ['#ff0033', '#ff66aa', '#ff1b1b']
-  const bluePalette = ['#0099ff', '#66ccff', '#0055ff']
-
-  const colors = theme === 'blue' ? bluePalette : redPalette
+    await loadFull(engine);
+  }, []);
 
   return (
     <Particles
       id="tsparticles"
       init={particlesInit}
       options={{
-        fullScreen: { enable: true, zIndex: 0 },
-        fpsLimit: 60,
-        interactivity: {
-          detectsOn: 'window',
-          events: {
-            onHover: { enable: true, mode: 'repulse' },
-            onClick: { enable: false },
-            resize: true
-          },
-          modes: { repulse: { distance: 120, duration: 0.4 } }
-        },
+        background: { color: "transparent" },
+        fpsLimit: 120,
         particles: {
-          number: { value: 72, density: { enable: true, area: 900 } },
-          color: { value: colors },
-          links: {
-            enable: true,
-            distance: 140,
-            color: colors[0],
-            opacity: 0.12,
-            width: 1
+          number: { value: 80, density: { enable: true, value_area: 800 } },
+          color: { value: "#ff0000" }, // Neon red
+          shape: { type: "circle" },
+          opacity: {
+            value: 0.8,
+            random: true,
+            anim: { enable: true, speed: 0.5, opacity_min: 0.1 }
+          },
+          size: {
+            value: 3,
+            random: true,
+            anim: { enable: true, speed: 2, size_min: 0.5 }
           },
           move: {
             enable: true,
-            speed: 0.9,
-            direction: 'none',
-            outModes: { default: 'out' }
-          },
-          opacity: { value: 0.8, random: { enable: true, minimumValue: 0.25 }, animation: { enable: true, speed: 0.6, minimumValue: 0.2 } },
-          size: { value: { min: 0.6, max: 3.2 }, random: true, animation: { enable: true, speed: 2, minimumValue: 0.6 } },
-          shape: { type: 'circle' }
+            speed: 1.5,
+            direction: "none",
+            random: false,
+            straight: false,
+            outModes: { default: "out" },
+            attract: { enable: false }
+          }
         },
-        detectRetina: true
+        interactivity: {
+          events: {
+            onHover: { enable: true, mode: "repulse" },
+            onClick: { enable: true, mode: "push" },
+            resize: true
+          },
+          modes: {
+            repulse: { distance: 100, duration: 0.4 },
+            push: { quantity: 4 }
+          }
+        },
+        retina_detect: true
       }}
     />
-  )
+  );
 }
